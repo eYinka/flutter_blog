@@ -3,7 +3,7 @@ import 'dart:io';
 import 'blog_item.dart';
 import 'package:path_provider/path_provider.dart';
 
-class StorageHelper {
+class StorageClass {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;

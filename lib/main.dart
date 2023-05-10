@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'blog_item.dart';
-import 'storage_helper.dart';
+import 'json_storage.dart';
 import 'add_edit_blog_item.dart';
 import 'blog_details.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   List<BlogItem> _blogItems = [];
   String searchText = '';
-  final StorageHelper _storageHelper = StorageHelper();
+  final StorageClass _storageFunction = StorageClass();
 
   @override
   void initState() {
@@ -41,12 +41,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _storageHelper.writeBlogItems(_blogItems);
+      _storageFunction.writeBlogItems(_blogItems);
     }
   }
 
   Future<void> _loadBlogItems() async {
-    List<BlogItem> blogItems = await _storageHelper.readBlogItems();
+    List<BlogItem> blogItems = await _storageFunction.readBlogItems();
     setState(() {
       _blogItems = blogItems;
     });
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           // Format the date in a more human-readable format. Package: Intl
 
           // blogItem.date throws an error when we pass it directly to Intl package's DateFormat.
-          // So we need to convert it to the required datatype (DateTime from the json
+          // So we need to convert it to the required datatype (DateTime from the json)
           DateTime convertedDate = DateTime.parse(blogItem.date);
 
           // I got the format parameters from: https://api.flutter.dev/flutter/intl/DateFormat-class.html
